@@ -7,7 +7,7 @@ workflows:
     environment:
       # Configurazione firma del codice iOS
       ios_signing:
-        distribution_type: ad_hoc  # Opzioni: development, ad_hoc, app_store, enterprise
+        distribution_type: development  # Opzioni: development, ad_hoc, app_store, enterprise
         bundle_identifier: com.mynoleggioapp.app  # CAMBIA CON IL TUO BUNDLE ID
       
       # Variabili d'ambiente
