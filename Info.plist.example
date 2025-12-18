@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Camera permission for barcode scanner -->
+    <key>NSCameraUsageDescription</key>
+    <string>L'app ha bisogno dell'accesso alla fotocamera per scansionare codici QR e barcode</string>
+    
+    <!-- Face ID permission for biometric authentication -->
+    <key>NSFaceIDUsageDescription</key>
+    <string>L'app usa Face ID per l'accesso rapido e sicuro</string>
+    
+    <!-- Notification permissions are requested at runtime via UserNotifications framework -->
+</dict>
+</plist>
+
