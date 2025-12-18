@@ -1,0 +1,144 @@
+📱 MyNoleggio iOS App - Documentazione
+═══════════════════════════════════════════════════════════
+
+🎯 INIZIA QUI
+═══════════════════════════════════════════════════════════
+
+1. 📖 README.md
+   └─ Overview progetto + 3 passi per creare IPA
+   └─ ⏱️ 5 minuti di lettura
+   └─ 👉 PARTI DA QUI!
+
+2. ⚡ QUICK_START.md  
+   └─ Guida rapida per chi ha già certificati
+   └─ ⏱️ 2 minuti di lettura
+   └─ 3 comandi per uploadare
+
+3. ✅ PROJECT_STATUS.md
+   └─ Stato attuale del progetto
+   └─ Cosa è stato fatto
+   └─ Cosa serve ancora
+
+
+📚 GUIDE DETTAGLIATE
+═══════════════════════════════════════════════════════════
+
+4. 📖 CODEMAGIC_SETUP.md ⭐ GUIDA COMPLETA
+   └─ Step-by-step completo da zero
+   └─ ⏱️ 30 minuti di lettura
+   └─ Include:
+      ├─ Come creare certificati Apple
+      ├─ Come configurare Codemagic
+      ├─ Come buildare l'app
+      ├─ Come installare IPA
+      └─ Troubleshooting completo
+
+5. ✓ CHECKLIST.md
+   └─ Checklist verifica pre-build
+   └─ Spunta ogni voce prima di buildare
+   └─ Include info da ricordare
+
+6. 🔧 ENVIRONMENT_VARIABLES.md
+   └─ Variabili ambiente opzionali
+   └─ TestFlight, Slack, build avanzati
+   └─ Solo se servono funzionalità extra
+
+
+🛠️ FILE TECNICI
+═══════════════════════════════════════════════════════════
+
+7. codemagic.yaml
+   └─ Configurazione build Codemagic
+   └─ ⚠️ Modifica: bundle ID + email
+
+8. ExportOptions.plist
+   └─ Opzioni export IPA
+   └─ Configurato automaticamente
+
+9. check_project.sh ⭐ ESEGUILO!
+   └─ Script verifica progetto
+   └─ Comando: ./check_project.sh
+   └─ Controlla che tutto sia OK
+
+10. .gitignore
+    └─ Esclude file sensibili da Git
+    └─ (certificati, .p12, etc.)
+
+
+📋 INFO GENERALI
+═══════════════════════════════════════════════════════════
+
+11. README_BUILD.md
+    └─ Info generali su build iOS
+    └─ Opzioni build, prerequisiti
+
+
+🚀 FLUSSO CONSIGLIATO
+═══════════════════════════════════════════════════════════
+
+PRIMO SETUP (hai 1 ora):
+├─ 1. Leggi README.md (5 min)
+├─ 2. Leggi CODEMAGIC_SETUP.md (30 min)
+├─ 3. Segui la guida step-by-step
+├─ 4. Usa CHECKLIST.md per verificare
+└─ 5. Build! 🎉
+
+HAI GIÀ TUTTO PRONTO (hai 10 min):
+├─ 1. Leggi QUICK_START.md (2 min)
+├─ 2. ./check_project.sh (1 min)
+├─ 3. git push (2 min)
+├─ 4. Setup Codemagic (5 min)
+└─ 5. Build! 🎉
+
+
+📊 PRIORITÀ FILE
+═══════════════════════════════════════════════════════════
+
+🔴 MUST READ:
+   ├─ README.md
+   ├─ CODEMAGIC_SETUP.md (se primo setup)
+   └─ QUICK_START.md (se hai già certificati)
+
+🟡 CONSIGLIATI:
+   ├─ PROJECT_STATUS.md
+   ├─ CHECKLIST.md
+   └─ Esegui: ./check_project.sh
+
+🟢 OPZIONALI:
+   ├─ ENVIRONMENT_VARIABLES.md
+   └─ README_BUILD.md
+
+
+🎯 AZIONI IMMEDIATE
+═══════════════════════════════════════════════════════════
+
+[ ] 1. cat README.md
+[ ] 2. ./check_project.sh
+[ ] 3. Personalizza bundle ID in codemagic.yaml
+[ ] 4. Leggi CODEMAGIC_SETUP.md
+[ ] 5. Segui i passi
+[ ] 6. Build su Codemagic!
+
+
+📞 LINK UTILI
+═══════════════════════════════════════════════════════════
+
+• Codemagic:         https://codemagic.io/
+• Apple Developer:   https://developer.apple.com/
+• Codemagic Docs:    https://docs.codemagic.io/
+• Forum Support:     https://github.com/codemagic-ci-cd/codemagic-docs/discussions
+
+
+💡 TIPS
+═══════════════════════════════════════════════════════════
+
+✨ Prima build: dedica 1 ora per leggere tutto
+⚡ Build successive: 5 minuti (automatiche)
+📧 Configura email notifica per sapere quando è pronto
+🔐 MAI committare .p12 o .mobileprovision su Git
+✅ Usa check_project.sh prima di ogni build
+
+
+═══════════════════════════════════════════════════════════
+                    Buon Build! 🚀
+═══════════════════════════════════════════════════════════
