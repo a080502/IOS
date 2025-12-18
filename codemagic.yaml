@@ -1,0 +1,98 @@
+workflows:
+  ios-workflow:
+    name: iOS Build MyNoleggio
+    max_build_duration: 60
+    instance_type: mac_mini_m1
+    
+    environment:
+      # Configurazione firma del codice iOS
+      ios_signing:
+        distribution_type: ad-hoc  # Opzioni: development, ad-hoc, app-store, enterprise
+        bundle_identifier: com.mynoleggioapp.app  # CAMBIA CON IL TUO BUNDLE ID
+      
+      # Variabili d'ambiente
+      vars:
+        XCODE_PROJECT: "MyNoleggioApp.xcodeproj"
+        XCODE_SCHEME: "MyNoleggioApp"
+        BUNDLE_ID: "com.mynoleggioapp.app"  # CAMBIA CON IL TUO BUNDLE ID
+        APP_STORE_CONNECT_ISSUER_ID: ""  # Opzionale per TestFlight
+        APP_STORE_CONNECT_KEY_IDENTIFIER: ""  # Opzionale per TestFlight
+        APP_STORE_CONNECT_PRIVATE_KEY: ""  # Opzionale per TestFlight
+      
+      # Versione Xcode da usare
+      xcode: 15.2
+      cocoapods: default
+    
+    # Script da eseguire in sequenza
+    scripts:
+      - name: Verifica ambiente build
+        script: |
+          echo "🔍 Verifica ambiente..."
+          xcode-select --print-path
+          xcodebuild -version
+          ls -la
+      
+      - name: Verifica progetto Xcode
+        script: |
+          echo "📱 Verifica progetto Xcode..."
+          xcodebuild -list -project "$XCODE_PROJECT"
+      
+      - name: Installa dipendenze (se necessario)
+        script: |
+          # Se usi CocoaPods, decommentare:
+          # pod install
+          echo "✅ Nessuna dipendenza da installare"
+      
+      - name: Configura firma del codice
+        script: |
+          echo "🔐 Configurazione firma del codice..."
+          xcode-project use-profiles
+      
+      - name: Incrementa build number (opzionale)
+        script: |
+          # Incrementa automaticamente il build number
+          cd MyNoleggioApp
+          BUILD_NUMBER=$(($(grep -m1 'CFBundleVersion' Info.plist | sed 's/[^0-9]*//g') + 1))
+          echo "📦 Nuovo build number: $BUILD_NUMBER"
+          # /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $BUILD_NUMBER" Info.plist
+      
+      - name: Build IPA per distribuzione
+        script: |
+          echo "🚀 Build IPA..."
+          xcode-project build-ipa \
+            --project "$XCODE_PROJECT" \
+            --scheme "$XCODE_SCHEME" \
+            --archive-flags="-destination generic/platform=iOS"
+    
+    # File generati da conservare
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app.dSYM
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.ipa
+    
+    # Opzioni di pubblicazione
+    publishing:
+      # Email di notifica
+      email:
+        recipients:
+          - denis.demonte@gmail.com  # CAMBIA CON LA TUA EMAIL
+        notify:
+          success: true
+          failure: true
+      
+      # Opzionale: pubblicazione su App Store Connect/TestFlight
+      # app_store_connect:
+      #   api_key: $APP_STORE_CONNECT_PRIVATE_KEY
+      #   key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
+      #   issuer_id: $APP_STORE_CONNECT_ISSUER_ID
+      #   submit_to_testflight: true
+      
+      # Opzionale: pubblicazione su Slack
+      # slack:
+      #   channel: '#builds'
+      #   notify_on_build_start: false
+      #   notify:
+      #     success: true
+      #     failure: true
+
