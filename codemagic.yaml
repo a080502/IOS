@@ -5,8 +5,10 @@ workflows:
     instance_type: mac_mini_m1
     
     environment:
-      # Build senza code signing (solo per test compilazione)
-      # Per IPA installabile, aggiungi sezione ios_signing e certificati
+      # Build con code signing per AltStore
+      ios_signing:
+        distribution_type: development  # o ad_hoc
+        bundle_identifier: com.mynoleggioapp.app
       
       # Variabili d'ambiente
       vars:
@@ -46,29 +48,26 @@ workflows:
           echo "📦 Nuovo build number: $BUILD_NUMBER"
           # /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $BUILD_NUMBER" Info.plist
       
-      - name: Build e crea IPA per AltStore
+      - name: Build e crea IPA firmato per AltStore
         script: |
-          echo "🚀 Build app..."
-          xcodebuild -project "$XCODE_PROJECT" \
+          echo "🚀 Build e archivio app..."
+          xcodebuild archive \
+            -project "$XCODE_PROJECT" \
             -scheme "$XCODE_SCHEME" \
             -sdk iphoneos \
             -configuration Release \
-            -derivedDataPath build \
-            -allowProvisioningUpdates \
-            CODE_SIGN_IDENTITY="" \
-            CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGNING_ALLOWED=NO \
-            DEVELOPMENT_TEAM="" \
-            build
+            -archivePath build/MyNoleggioApp.xcarchive \
+            -allowProvisioningUpdates
           
-          echo "📦 Creazione IPA..."
-          cd build/Build/Products/Release-iphoneos
-          mkdir -p Payload
-          cp -r MyNoleggioApp.app Payload/
-          zip -r MyNoleggioApp.ipa Payload
-          mkdir -p $CM_BUILD_DIR/output
-          cp MyNoleggioApp.ipa $CM_BUILD_DIR/output/
-          echo "✅ IPA creato: output/MyNoleggioApp.ipa"
+          echo "📦 Export IPA firmato..."
+          xcodebuild -exportArchive \
+            -archivePath build/MyNoleggioApp.xcarchive \
+            -exportPath output \
+            -exportOptionsPlist ExportOptions.plist \
+            -allowProvisioningUpdates
+          
+          echo "✅ IPA firmato creato in output/"
+          ls -lh output/
     
     # File generati da conservare
     artifacts:
