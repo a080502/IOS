@@ -4,6 +4,7 @@ import SwiftUI
 struct RootView: View {
     @EnvironmentObject private var appSession: AppSession
     @State private var isInitialized = false
+    @AppStorage("FIRST_SETUP_DONE") private var isFirstSetupDone = false
 
     var body: some View {
         Group {
@@ -15,7 +16,7 @@ struct RootView: View {
                             isInitialized = true
                         }
                     }
-            } else if !ServerConfig.isFirstSetupDone {
+            } else if !isFirstSetupDone {
                 NavigationStack {
                     ServerSetupView()
                 }
