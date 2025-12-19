@@ -3,7 +3,7 @@ import Foundation
 @MainActor
 final class RentalsViewModel: ObservableObject {
     @Published var state: State = .loading
-    @Published var currentFilter: Filter = .all
+    @Published var currentFilter: Filter = .active
 
     enum State {
         case loading
