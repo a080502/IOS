@@ -76,30 +76,30 @@ struct BarcodeScannerView: View {
 struct CameraPreview: UIViewRepresentable {
     let session: AVCaptureSession
     
-    func makeUIView(context: Context) -> UIView {
-        let view = UIView(frame: .zero)
-        
-        let previewLayer = AVCaptureVideoPreviewLayer(session: session)
-        previewLayer.videoGravity = .resizeAspectFill
-        view.layer.addSublayer(previewLayer)
-        
-        context.coordinator.previewLayer = previewLayer
-        
+    func makeUIView(context: Context) -> PreviewView {
+        let view = PreviewView()
+        view.videoPreviewLayer.session = session
+        view.videoPreviewLayer.videoGravity = .resizeAspectFill
         return view
     }
     
-    func updateUIView(_ uiView: UIView, context: Context) {
-        if let previewLayer = context.coordinator.previewLayer {
-            previewLayer.frame = uiView.bounds
+    func updateUIView(_ uiView: PreviewView, context: Context) {
+        // Frame già gestito da layoutSubviews
+    }
+    
+    class PreviewView: UIView {
+        override class var layerClass: AnyClass {
+            AVCaptureVideoPreviewLayer.self
         }
-    }
-    
-    func makeCoordinator() -> Coordinator {
-        Coordinator()
-    }
-    
-    class Coordinator {
-        var previewLayer: AVCaptureVideoPreviewLayer?
+        
+        var videoPreviewLayer: AVCaptureVideoPreviewLayer {
+            layer as! AVCaptureVideoPreviewLayer
+        }
+        
+        override func layoutSubviews() {
+            super.layoutSubviews()
+            videoPreviewLayer.frame = bounds
+        }
     }
 }
 
