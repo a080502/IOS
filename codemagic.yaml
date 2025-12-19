@@ -5,21 +5,14 @@ workflows:
     instance_type: mac_mini_m1
     
     environment:
-      # Configurazione firma del codice iOS - AUTOMATICA
-      # Codemagic genera automaticamente i certificati
-      ios_signing:
-        distribution_type: development
-        bundle_identifier: com.mynoleggioapp.app  # CAMBIA CON IL TUO BUNDLE ID
+      # Build senza code signing (solo per test compilazione)
+      # Per IPA installabile, aggiungi sezione ios_signing e certificati
       
       # Variabili d'ambiente
       vars:
         XCODE_PROJECT: "MyNoleggioApp.xcodeproj"
         XCODE_SCHEME: "MyNoleggioApp"
         BUNDLE_ID: "com.mynoleggioapp.app"  # CAMBIA CON IL TUO BUNDLE ID
-        # Decommentare e configurare solo se usi TestFlight/App Store Connect:
-        # APP_STORE_CONNECT_ISSUER_ID: $APP_STORE_CONNECT_ISSUER_ID
-        # APP_STORE_CONNECT_KEY_IDENTIFIER: $APP_STORE_CONNECT_KEY_IDENTIFIER
-        # APP_STORE_CONNECT_PRIVATE_KEY: $APP_STORE_CONNECT_PRIVATE_KEY
       
       # Versione Xcode da usare
       xcode: 15.2
@@ -45,11 +38,6 @@ workflows:
           # pod install
           echo "✅ Nessuna dipendenza da installare"
       
-      - name: Configura firma del codice
-        script: |
-          echo "🔐 Configurazione firma del codice..."
-          xcode-project use-profiles
-      
       - name: Incrementa build number (opzionale)
         script: |
           # Incrementa automaticamente il build number
@@ -58,14 +46,17 @@ workflows:
           echo "📦 Nuovo build number: $BUILD_NUMBER"
           # /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $BUILD_NUMBER" Info.plist
       
-      - name: Build IPA per distribuzione
+      - name: Build senza firma (solo test compilazione)
         script: |
-          echo "🚀 Build IPA..."
-          xcode-project build-ipa \
-            --project "$XCODE_PROJECT" \
-            --scheme "$XCODE_SCHEME" \
-            --archive-flags="-destination generic/platform=iOS" \
-            CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+          echo "🚀 Build per simulatore..."
+          xcodebuild -project "$XCODE_PROJECT" \
+            -scheme "$XCODE_SCHEME" \
+            -sdk iphonesimulator \
+            -configuration Release \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            clean build
     
     # File generati da conservare
     artifacts:
