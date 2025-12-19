@@ -1,8 +1,35 @@
 import Foundation
 
+/// URLSession delegate that accepts self-signed certificates
+class InsecureURLSessionDelegate: NSObject, URLSessionDelegate {
+    func urlSession(
+        _ session: URLSession,
+        didReceive challenge: URLAuthenticationChallenge,
+        completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
+    ) {
+        // Accept any certificate (for self-signed or invalid certificates)
+        if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
+            if let trust = challenge.protectionSpace.serverTrust {
+                let credential = URLCredential(trust: trust)
+                completionHandler(.useCredential, credential)
+                return
+            }
+        }
+        completionHandler(.performDefaultHandling, nil)
+    }
+}
+
 /// Simple API client that talks to the existing PHP backend using JSON,
 /// reproducing the logic of the Android `LoginActivity.performLogin`.
 struct APIClient {
+    // Custom URLSession that accepts self-signed certificates
+    private static let insecureSession: URLSession = {
+        let delegate = InsecureURLSessionDelegate()
+        let configuration = URLSessionConfiguration.default
+        configuration.timeoutIntervalForRequest = 30
+        configuration.timeoutIntervalForResource = 60
+        return URLSession(configuration: configuration, delegate: delegate, delegateQueue: nil)
+    }()
     enum APIError: Error, LocalizedError {
         case invalidResponse
         case httpError(Int)
@@ -39,7 +66,7 @@ struct APIClient {
 
         request.httpBody = try JSONSerialization.data(withJSONObject: body, options: [])
 
-        let (data, response) = try await URLSession.shared.data(for: request)
+        let (data, response) = try await insecureSession.data(for: request)
 
         guard let http = response as? HTTPURLResponse else {
             throw APIError.invalidResponse
@@ -79,7 +106,7 @@ struct APIClient {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
-        let (data, response) = try await URLSession.shared.data(for: request)
+        let (data, response) = try await insecureSession.data(for: request)
         
         guard let http = response as? HTTPURLResponse else {
             throw APIError.invalidResponse
@@ -108,7 +135,7 @@ struct APIClient {
             request.setValue("Bearer \(apiToken)", forHTTPHeaderField: "Authorization")
         }
 
-        let (data, response) = try await URLSession.shared.data(for: request)
+        let (data, response) = try await insecureSession.data(for: request)
 
         guard let http = response as? HTTPURLResponse else {
             throw APIError.invalidResponse
@@ -134,7 +161,7 @@ struct APIClient {
             request.setValue("Bearer \(apiToken)", forHTTPHeaderField: "Authorization")
         }
 
-        let (data, response) = try await URLSession.shared.data(for: request)
+        let (data, response) = try await insecureSession.data(for: request)
 
         guard let http = response as? HTTPURLResponse else {
             throw APIError.invalidResponse
@@ -165,7 +192,7 @@ struct APIClient {
         request.httpMethod = "GET"
         request.setValue("Bearer \(apiToken)", forHTTPHeaderField: "Authorization")
 
-        let (data, response) = try await URLSession.shared.data(for: request)
+        let (data, response) = try await insecureSession.data(for: request)
 
         guard let http = response as? HTTPURLResponse else {
             throw APIError.invalidResponse
@@ -192,7 +219,7 @@ struct APIClient {
         request.httpMethod = "GET"
         request.setValue("Bearer \(apiToken)", forHTTPHeaderField: "Authorization")
 
-        let (data, response) = try await URLSession.shared.data(for: request)
+        let (data, response) = try await insecureSession.data(for: request)
 
         guard let http = response as? HTTPURLResponse else {
             throw APIError.invalidResponse
