@@ -21,7 +21,7 @@ struct RootView: View {
                     ServerSetupView()
                 }
             } else if appSession.isLoggedIn {
-                MainPlaceholderView()
+                HomeView()
                     .onAppear {
                         // Ensure heartbeat is running when main view appears
                         if !appSession.sessionKilled {
@@ -45,50 +45,6 @@ struct RootView: View {
             } else {
                 LoginView(appSession: appSession)
             }
-        }
-    }
-}
-
-/// Temporary placeholder for the main home once client/rental lists are implemented.
-struct MainPlaceholderView: View {
-    @EnvironmentObject private var appSession: AppSession
-
-    var body: some View {
-        NavigationStack {
-            List {
-                Section {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Home iOS")
-                            .font(.largeTitle.bold())
-                        if let user = appSession.user {
-                            Text("Ciao, \(user.nome)")
-                                .font(.title2)
-                            Text("Ruolo: \(user.ruolo) | Filiale: \(user.filiale ?? "-")")
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
-                        }
-                    }
-                    .padding(.vertical, 8)
-                }
-
-                Section("Navigazione") {
-                    NavigationLink("Clienti") {
-                        ClientsListView(appSession: appSession)
-                    }
-                    NavigationLink("Storico noleggi") {
-                        RentalsListView(appSession: appSession)
-                    }
-                }
-
-                Section {
-                    Button(role: .destructive) {
-                        appSession.performForcedLogout()
-                    } label: {
-                        Text("Logout")
-                    }
-                }
-            }
-            .navigationTitle("Home")
         }
     }
 }
