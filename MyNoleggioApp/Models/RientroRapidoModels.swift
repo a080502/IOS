@@ -141,3 +141,17 @@ struct RientroResultDTO: Codable {
         case emailInviata = "email_inviata"
     }
 }
+
+// MARK: - Nuovo Noleggio
+
+struct NuovoNoleggioResultDTO: Codable {
+    let success: Bool
+    let message: String?
+    let noleggioId: Int?
+    
+    enum CodingKeys: String, CodingKey {
+        case success
+        case message
+        case noleggioId = "noleggio_id"
+    }
+}

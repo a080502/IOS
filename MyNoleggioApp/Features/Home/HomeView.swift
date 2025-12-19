@@ -5,6 +5,7 @@ struct HomeView: View {
     @State private var showScanner = false
     @State private var showSettings = false
     @State private var showRientroRapido = false
+    @State private var showNuovoNoleggio = false
     @State private var noleggioAttivi = "—"
     @State private var scadenze = "—"
     @State private var clientiTotali = "—"
@@ -45,6 +46,10 @@ struct HomeView: View {
             }
             .sheet(isPresented: $showRientroRapido) {
                 RientroRapidoView()
+                    .environmentObject(appSession)
+            }
+            .sheet(isPresented: $showNuovoNoleggio) {
+                NuovoNoleggioView()
                     .environmentObject(appSession)
             }
             .sheet(isPresented: $showSettings) {
@@ -215,9 +220,10 @@ struct HomeView: View {
                 QuickActionButton(
                     title: "Nuovo Noleggio",
                     icon: "plus.circle.fill",
-                    color: .orange,
-                    comingSoon: true
-                )
+                    color: .orange
+                ) {
+                    showNuovoNoleggio = true
+                }
             }
         }
     }

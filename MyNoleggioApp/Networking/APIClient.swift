@@ -327,4 +327,49 @@ struct APIClient {
         }
         
         return decoded
+    }    
+    // MARK: - Nuovo Noleggio
+    
+    /// Crea nuovo noleggio
+    static func creaNuovoNoleggio(
+        clienteId: Int,
+        dataInizio: String,
+        dataFinePrevista: String,
+        articoli: [[String: Any]],
+        note: String?,
+        apiToken: String
+    ) async throws -> NuovoNoleggioResultDTO {
+        let path = "/noleggio/api/noleggi.php"
+        var request = URLRequest(url: ServerConfig.buildUrl(path: path))
+        request.httpMethod = "POST"
+        request.setValue("Bearer \(apiToken)", forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        var payload: [String: Any] = [
+            "cliente_id": clienteId,
+            "data_inizio": dataInizio,
+            "data_fine_prevista": dataFinePrevista,
+            "articoli": articoli
+        ]
+        
+        if let note = note {
+            payload["note"] = note
+        }
+        
+        request.httpBody = try JSONSerialization.data(withJSONObject: payload)
+        
+        let (data, response) = try await insecureSession.data(for: request)
+        
+        guard let http = response as? HTTPURLResponse, http.statusCode == 200 else {
+            throw APIError.invalidResponse
+        }
+        
+        let decoded = try JSONDecoder().decode(NuovoNoleggioResultDTO.self, from: data)
+        
+        if !decoded.success {
+            throw APIError.serverMessage(decoded.message ?? "Errore creazione noleggio")
+        }
+        
+        return decoded
     }
+}
