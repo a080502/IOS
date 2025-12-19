@@ -291,47 +291,6 @@ struct ClientePickerView: View {
     }
 }
 
-// MARK: - Attrezzatura Picker (Semplificato)
-
-struct AttrezzaturaPickerView: View {
-    @Environment(\.dismiss) private var dismiss
-    let onSelect: (AttrezzaturaBase, Int) -> Void
-    
-    @State private var searchText = ""
-    @State private var quantita = 1
-    @State private var attrezzature: [AttrezzaturaBase] = []
-    
-    // Mock data per ora - da sostituire con chiamata API reale
-    var body: some View {
-        NavigationView {
-            VStack {
-                Text("Attrezzatura Picker")
-                    .font(.headline)
-                    .padding()
-                
-                Text("🚧 Coming Soon")
-                    .font(.title)
-                    .foregroundColor(.orange)
-                
-                Text("Per ora, usa il web per aggiungere attrezzature")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                    .multilineTextAlignment(.center)
-                    .padding()
-            }
-            .navigationTitle("Aggiungi Attrezzatura")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Chiudi") {
-                        dismiss()
-                    }
-                }
-            }
-        }
-    }
-}
-
 // MARK: - Models
 
 struct ArticoloNoleggio: Identifiable {
@@ -340,13 +299,6 @@ struct ArticoloNoleggio: Identifiable {
     let nome: String
     let codice: String?
     var quantita: Int
-    let prezzoGiorno: Double
-}
-
-struct AttrezzaturaBase {
-    let id: Int
-    let nome: String
-    let codice: String?
     let prezzoGiorno: Double
 }
 
@@ -377,7 +329,7 @@ class NuovoNoleggioViewModel: ObservableObject {
         }
     }
     
-    func aggiungiArticolo(_ attrezzatura: AttrezzaturaBase, quantita: Int) {
+    func aggiungiArticolo(_ attrezzatura: Attrezzatura, quantita: Int) {
         let articolo = ArticoloNoleggio(
             attrezzaturaId: attrezzatura.id,
             nome: attrezzatura.nome,
