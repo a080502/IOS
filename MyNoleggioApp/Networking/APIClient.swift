@@ -60,7 +60,7 @@ struct APIClient {
     
     /// Checks if the current session is still valid (heartbeat)
     static func heartbeat(sessionId: String?, apiToken: String?) async throws -> HeartbeatResponse {
-        var components = URLComponents(string: ServerConfig.buildUrl(path: "/noleggio/api/sessioni_online.php"))!
+        var components = URLComponents(url: ServerConfig.buildUrl(path: "/noleggio/api/sessioni_online.php"), resolvingAgainstBaseURL: false)!
         var queryItems: [URLQueryItem] = [URLQueryItem(name: "action", value: "heartbeat")]
         
         if let sessionId = sessionId {
