@@ -46,28 +46,34 @@ workflows:
           echo "📦 Nuovo build number: $BUILD_NUMBER"
           # /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $BUILD_NUMBER" Info.plist
       
-      - name: Build senza firma (solo test compilazione)
+      - name: Build e crea IPA per AltStore
         script: |
-          echo "🚀 Build per simulatore..."
-          set -x
+          echo "🚀 Build app..."
           xcodebuild -project "$XCODE_PROJECT" \
             -scheme "$XCODE_SCHEME" \
-            -sdk iphonesimulator \
+            -sdk iphoneos \
             -configuration Release \
             -derivedDataPath build \
+            -allowProvisioningUpdates \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
-            build | tee build.log
+            DEVELOPMENT_TEAM="" \
+            build
           
-          echo "✅ Build completata"
+          echo "📦 Creazione IPA..."
+          cd build/Build/Products/Release-iphoneos
+          mkdir -p Payload
+          cp -r MyNoleggioApp.app Payload/
+          zip -r MyNoleggioApp.ipa Payload
+          mkdir -p $CM_BUILD_DIR/output
+          cp MyNoleggioApp.ipa $CM_BUILD_DIR/output/
+          echo "✅ IPA creato: output/MyNoleggioApp.ipa"
     
     # File generati da conservare
     artifacts:
-      - build/ios/ipa/*.ipa
-      - /tmp/xcodebuild_logs/*.log
-      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app.dSYM
-      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.ipa
+      - output/*.ipa
+      - build/Build/Products/Release-iphoneos/*.app
     
     # Opzioni di pubblicazione
     publishing:
