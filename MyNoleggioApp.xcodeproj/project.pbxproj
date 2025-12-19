@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F9A3B7E4000000004 /* AttrezzaturaPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A3B7E4A1B2C3D4E /* AttrezzaturaPickerView.swift */; };
 		AC32ACE65E5F46ADBBB9084C /* NuovoNoleggioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10516157A62A4266B13FB26B /* NuovoNoleggioView.swift */; };
 		A54E33B31E2A4EC5BAE9CA9E /* RientroRapidoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86A469B3C5B24E8781439CB4 /* RientroRapidoView.swift */; };
 		7B7DE5D6F5A64201BF375012 /* RientroRapidoModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF6E151A5584FA0BB2F757A /* RientroRapidoModels.swift */; };
@@ -43,6 +44,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F9A3B7E4A1B2C3D4E /* AttrezzaturaPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MyNoleggioApp/Features/NuovoNoleggio/AttrezzaturaPickerView.swift"; sourceTree = "<group>"; };
 		10516157A62A4266B13FB26B /* NuovoNoleggioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MyNoleggioApp/Features/NuovoNoleggio/NuovoNoleggioView.swift"; sourceTree = "<group>"; };
 		86A469B3C5B24E8781439CB4 /* RientroRapidoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MyNoleggioApp/Features/RientroRapido/RientroRapidoView.swift"; sourceTree = "<group>"; };
 		BDF6E151A5584FA0BB2F757A /* RientroRapidoModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MyNoleggioApp/Models/RientroRapidoModels.swift"; sourceTree = "<group>"; };
@@ -264,7 +266,8 @@
 				A10000015819 /* ServerConfig.swift in Sources */,
 				A10000080305 /* ServerSetupView.swift in Sources */,			BDF6E15100000001 /* RientroRapidoModels.swift in Sources */,
 			86A469B300000002 /* RientroRapidoView.swift in Sources */,
-			10516157000000003 /* NuovoNoleggioView.swift in Sources */,			);
+			10516157000000003 /* NuovoNoleggioView.swift in Sources */,
+			F9A3B7E4000000004 /* AttrezzaturaPickerView.swift in Sources */,			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
