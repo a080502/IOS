@@ -52,6 +52,11 @@
     <string>L'app usa Face ID per l'accesso rapido e sicuro</string>
     <key>ITSAppUsesNonExemptEncryption</key>
     <false/>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+    </dict>
 </dict>
 </plist>
 

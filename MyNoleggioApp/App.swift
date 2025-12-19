@@ -6,9 +6,20 @@ struct MyNoleggioApp: App {
     @Environment(\.scenePhase) private var scenePhase
 
     init() {
+        // Prevent crashes on launch
+        #if DEBUG
+        print("🚀 App initialized")
+        #endif
+        
         // Setup notifications on app launch (replicates Android NotificationHelper.createNotificationChannels)
         Task {
-            await NotificationHelper.shared.setup()
+            do {
+                await NotificationHelper.shared.setup()
+            } catch {
+                #if DEBUG
+                print("⚠️ Notification setup failed: \(error.localizedDescription)")
+                #endif
+            }
         }
     }
 

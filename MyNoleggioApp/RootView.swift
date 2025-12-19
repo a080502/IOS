@@ -3,10 +3,19 @@ import SwiftUI
 /// Decides whether to show login flow, server setup, or main content.
 struct RootView: View {
     @EnvironmentObject private var appSession: AppSession
+    @State private var isInitialized = false
 
     var body: some View {
         Group {
-            if !ServerConfig.isFirstSetupDone {
+            if !isInitialized {
+                ProgressView("Caricamento...")
+                    .onAppear {
+                        // Small delay to ensure all systems are ready
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            isInitialized = true
+                        }
+                    }
+            } else if !ServerConfig.isFirstSetupDone {
                 NavigationStack {
                     ServerSetupView()
                 }

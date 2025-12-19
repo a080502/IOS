@@ -42,7 +42,11 @@ enum ServerConfig {
 
         let normalizedPath = cleanPath.hasPrefix("/") ? cleanPath : "/\(cleanPath)"
         let full = baseUrl + normalizedPath
-        return URL(string: full)!
+        guard let url = URL(string: full) else {
+            // Fallback to default URL if construction fails
+            return URL(string: "https://spazio.crmnoleggio.it")!
+        }
+        return url
     }
 
     static func normalizeBaseUrl(_ input: String) -> String {
