@@ -4,6 +4,11 @@ struct HomeView: View {
     @EnvironmentObject private var appSession: AppSession
     @State private var showScanner = false
     @State private var showSettings = false
+    @State private var noleggioAttivi = "—"
+    @State private var scadenze = "—"
+    @State private var clientiTotali = "—"
+    @State private var attrezzature = "—"
+    @State private var isLoadingStats = false
     
     var body: some View {
         NavigationStack {
@@ -40,6 +45,11 @@ struct HomeView: View {
             .sheet(isPresented: $showSettings) {
                 NavigationStack {
                     SettingsView()
+                }
+            }
+            .onAppear {
+                Task {
+                    await loadDashboardStats()
                 }
             }
         }
@@ -89,28 +99,28 @@ struct HomeView: View {
             ], spacing: 12) {
                 StatCard(
                     title: "Noleggi Attivi",
-                    value: "—",
+                    value: noleggioAttivi,
                     icon: "doc.text.fill",
                     color: .blue
                 )
                 
                 StatCard(
                     title: "In Scadenza",
-                    value: "—",
+                    value: scadenze,
                     icon: "clock.fill",
                     color: .orange
                 )
                 
                 StatCard(
                     title: "Clienti Totali",
-                    value: "—",
+                    value: clientiTotali,
                     icon: "person.3.fill",
                     color: .green
                 )
                 
                 StatCard(
                     title: "Attrezzature",
-                    value: "—",
+                    value: attrezzature,
                     icon: "wrench.and.screwdriver.fill",
                     color: .purple
                 )
@@ -207,6 +217,41 @@ struct HomeView: View {
     }
     
     // MARK: - Actions
+    
+    private func loadDashboardStats() async {
+        guard let token = appSession.apiToken else { return }
+        isLoadingStats = true
+        
+        do {
+            // Fetch storico noleggi to count active ones
+            let noleggi = try await APIClient.fetchStoricoNoleggi(filter: "attivo", limit: 100, apiToken: token)
+            noleggioAttivi = "\(noleggi.count)"
+            
+            // Count scadenze (noleggi attivi con data fine entro 7 giorni)
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            let today = Date()
+            let weekFromNow = Calendar.current.date(byAdding: .day, value: 7, to: today)!
+            
+            let scadenzeCount = noleggi.filter { noleggio in
+                guard let dataFine = dateFormatter.date(from: noleggio.dataFine) else { return false }
+                return dataFine >= today && dataFine <= weekFromNow
+            }.count
+            scadenze = "\(scadenzeCount)"
+            
+            // Fetch clienti to count total
+            let clienti = try await APIClient.fetchClienti(search: nil, limit: 1000, apiToken: token)
+            clientiTotali = "\(clienti.count)"
+            
+            // For now, set attrezzature as placeholder (would need specific API)
+            attrezzature = "N/D"
+        } catch {
+            // On error, keep "—" values
+            print("Error loading dashboard stats: \(error)")
+        }
+        
+        isLoadingStats = false
+    }
     
     private func handleScannedCode(_ code: String) {
         // TODO: Gestire codice scansionato

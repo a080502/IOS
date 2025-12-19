@@ -49,9 +49,19 @@ struct BarcodeScannerView: View {
                 }
             }
             .onAppear {
-                scanner.startScanning { barcode in
-                    onBarcodeScanned(barcode)
-                    isPresented = false
+                if scanner.hasPermission {
+                    scanner.startScanning { barcode in
+                        onBarcodeScanned(barcode)
+                        isPresented = false
+                    }
+                }
+            }
+            .onChange(of: scanner.hasPermission) { oldValue, newValue in
+                if newValue {
+                    scanner.startScanning { barcode in
+                        onBarcodeScanned(barcode)
+                        isPresented = false
+                    }
                 }
             }
             .onDisappear {

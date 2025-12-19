@@ -62,6 +62,11 @@ struct RentalsListView: View {
             }
         }
         .navigationTitle("Storico noleggi")
+        .onAppear {
+            Task {
+                await viewModel.load()
+            }
+        }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu {
