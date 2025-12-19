@@ -37,12 +37,9 @@
 		A10000009508 /* SecureStorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000035077 /* SecureStorageManager.swift */; };
 		A10000015819 /* ServerConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000022331 /* ServerConfig.swift */; };
 		A10000080305 /* ServerSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000008434 /* ServerSetupView.swift */; };
-
-		81738704D647421C95D4249D /* RientroRapidoModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF6E151A5584FA0BB2F757A /* RientroRapidoModels.swift */; };
-
-		DA2BC7D5B32D47F3BF1AF7EE /* RientroRapidoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86A469B3C5B24E8781439CB4 /* RientroRapidoView.swift */; };
-
-		0CB7217EE8E1409388A9F7B6 /* NuovoNoleggioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10516157A62A4266B13FB26B /* NuovoNoleggioView.swift */; };
+		BDF6E15100000001 /* RientroRapidoModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF6E151A5584FA0BB2F757A /* RientroRapidoModels.swift */; };
+		86A469B300000002 /* RientroRapidoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86A469B3C5B24E8781439CB4 /* RientroRapidoView.swift */; };
+		10516157000000003 /* NuovoNoleggioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10516157A62A4266B13FB26B /* NuovoNoleggioView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -263,13 +260,11 @@
 				A10000026110 /* RentalDetailViewModel.swift in Sources */,
 				A10000085485 /* RentalsListView.swift in Sources */,
 				A10000088375 /* RentalsViewModel.swift in Sources */,
-				A100000
-				81738704D647421C95D4249D /* RientroRapidoModels.swift in Sources */,0950
-				DA2BC7D5B32D47F3BF1AF7EE /* RientroRapidoView.swift in Sources */,
-				0CB7217EE8E1409388A9F7B6 /* NuovoNoleggioView.swift in Sources */,8 /* SecureStorageManager.swift in Sources */,
+				A10000009508 /* SecureStorageManager.swift in Sources */,
 				A10000015819 /* ServerConfig.swift in Sources */,
-				A10000080305 /* ServerSetupView.swift in Sources */,
-			);
+				A10000080305 /* ServerSetupView.swift in Sources */,			BDF6E15100000001 /* RientroRapidoModels.swift in Sources */,
+			86A469B300000002 /* RientroRapidoView.swift in Sources */,
+			10516157000000003 /* NuovoNoleggioView.swift in Sources */,			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
