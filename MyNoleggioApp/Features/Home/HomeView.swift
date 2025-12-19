@@ -4,6 +4,7 @@ struct HomeView: View {
     @EnvironmentObject private var appSession: AppSession
     @State private var showScanner = false
     @State private var showSettings = false
+    @State private var showRientroRapido = false
     @State private var noleggioAttivi = "—"
     @State private var scadenze = "—"
     @State private var clientiTotali = "—"
@@ -41,6 +42,10 @@ struct HomeView: View {
                 BarcodeScannerView(isPresented: $showScanner) { code in
                     handleScannedCode(code)
                 }
+            }
+            .sheet(isPresented: $showRientroRapido) {
+                RientroRapidoView()
+                    .environmentObject(appSession)
             }
             .sheet(isPresented: $showSettings) {
                 NavigationStack {
@@ -200,15 +205,16 @@ struct HomeView: View {
                 }
                 
                 QuickActionButton(
-                    title: "Nuovo Noleggio",
-                    icon: "plus.circle.fill",
-                    color: .green,
-                    comingSoon: true
-                )
+                    title: "Rientro Rapido",
+                    icon: "arrow.down.circle.fill",
+                    color: .green
+                ) {
+                    showRientroRapido = true
+                }
                 
                 QuickActionButton(
-                    title: "Cerca",
-                    icon: "magnifyingglass",
+                    title: "Nuovo Noleggio",
+                    icon: "plus.circle.fill",
                     color: .orange,
                     comingSoon: true
                 )

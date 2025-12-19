@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A54E33B31E2A4EC5BAE9CA9E /* RientroRapidoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86A469B3C5B24E8781439CB4 /* RientroRapidoView.swift */; };
+		7B7DE5D6F5A64201BF375012 /* RientroRapidoModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF6E151A5584FA0BB2F757A /* RientroRapidoModels.swift */; };
 		A10000999998 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000999999 /* HomeView.swift */; };
 		A1000001001 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001000 /* App.swift */; };
 		A1000002001 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000002000 /* RootView.swift */; };
@@ -37,6 +39,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		86A469B3C5B24E8781439CB4 /* RientroRapidoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RientroRapidoView.swift; sourceTree = "<group>"; };
+		BDF6E151A5584FA0BB2F757A /* RientroRapidoModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RientroRapidoModels.swift; sourceTree = "<group>"; };
 		A10000999999 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyNoleggioApp/Features/Home/HomeView.swift; sourceTree = "<group>"; };
 		A1000000000 /* MyNoleggioApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyNoleggioApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1000001000 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
@@ -215,7 +219,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				A1000003001 /* Assets.xcassets in Resources */,
-			);
+			
+				7B7DE5D6F5A64201BF375012 /* RientroRapidoModels.swift in Sources */,
+				A54E33B31E2A4EC5BAE9CA9E /* RientroRapidoView.swift in Sources */,);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */

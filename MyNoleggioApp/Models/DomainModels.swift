@@ -116,6 +116,23 @@ struct ArticoloDettaglio: Codable, Identifiable {
         case quantita
         case costoGiornaliero = "costo_giornaliero"
     }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        attrezzaturaNome = try container.decode(String.self, forKey: .attrezzaturaNome)
+        quantita = try container.decode(Int.self, forKey: .quantita)
+        
+        // Flexible costoGiornaliero parsing
+        if let costoDouble = try? container.decode(Double.self, forKey: .costoGiornaliero) {
+            costoGiornaliero = costoDouble
+        } else if let costoString = try? container.decode(String.self, forKey: .costoGiornaliero),
+                  let costoDouble = Double(costoString) {
+            costoGiornaliero = costoDouble
+        } else {
+            costoGiornaliero = 0.0
+        }
+    }
 }
 
 struct NoleggioDettaglio: Codable, Identifiable {
@@ -143,6 +160,40 @@ struct NoleggioDettaglio: Codable, Identifiable {
         case totaleFinale = "totale_finale"
         case note
         case articoli
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        id = try container.decode(Int.self, forKey: .id)
+        numeroNoleggio = try container.decode(String.self, forKey: .numeroNoleggio)
+        clienteNome = try? container.decode(String.self, forKey: .clienteNome)
+        dataInizio = try container.decode(String.self, forKey: .dataInizio)
+        dataFinePrevista = try? container.decode(String.self, forKey: .dataFinePrevista)
+        dataFineEffettiva = try? container.decode(String.self, forKey: .dataFineEffettiva)
+        stato = try container.decode(String.self, forKey: .stato)
+        note = try? container.decode(String.self, forKey: .note)
+        articoli = try? container.decode([ArticoloDettaglio].self, forKey: .articoli)
+        
+        // Flexible totalePrevisto parsing
+        if let prevDouble = try? container.decode(Double.self, forKey: .totalePrevisto) {
+            totalePrevisto = prevDouble
+        } else if let prevString = try? container.decode(String.self, forKey: .totalePrevisto),
+                  let prevDouble = Double(prevString) {
+            totalePrevisto = prevDouble
+        } else {
+            totalePrevisto = nil
+        }
+        
+        // Flexible totaleFinale parsing
+        if let finDouble = try? container.decode(Double.self, forKey: .totaleFinale) {
+            totaleFinale = finDouble
+        } else if let finString = try? container.decode(String.self, forKey: .totaleFinale),
+                  let finDouble = Double(finString) {
+            totaleFinale = finDouble
+        } else {
+            totaleFinale = nil
+        }
     }
 }
 

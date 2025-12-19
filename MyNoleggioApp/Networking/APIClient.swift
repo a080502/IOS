@@ -266,6 +266,65 @@ struct APIClient {
             throw APIError.serverMessage(decoded.message ?? "Noleggio non trovato")
         }
     }
-}
-
-
+    
+    // MARK: - Rientro Rapido
+    
+    /// Cerca noleggio tramite barcode/numero noleggio
+    static func cercaNoleggioPerBarcode(_ barcode: String, apiToken: String) async throws -> RientroRapidoNoleggio {
+        let path = "/noleggio/api/rientro_rapido.php?action=cerca&barcode=\(barcode)"
+        var request = URLRequest(url: ServerConfig.buildUrl(path: path))
+        request.httpMethod = "GET"
+        request.setValue("Bearer \(apiToken)", forHTTPHeaderField: "Authorization")
+        
+        let (data, response) = try await insecureSession.data(for: request)
+        
+        guard let http = response as? HTTPURLResponse, http.statusCode == 200 else {
+            throw APIError.invalidResponse
+        }
+        
+        let decoded = try JSONDecoder().decode(RientroRapidoResponseDTO.self, from: data)
+        
+        if decoded.success, let noleggio = decoded.noleggio {
+            return noleggio
+        } else {
+            throw APIError.serverMessage(decoded.message ?? "Noleggio non trovato")
+        }
+    }
+    
+    /// Processa rientro (totale o parziale)
+    static func processaRientro(
+        noleggioId: Int,
+        sigla: String,
+        righeIds: [Int],
+        rientroTotale: Bool,
+        apiToken: String
+    ) async throws -> RientroResultDTO {
+        let path = "/noleggio/api/rientro_rapido.php?action=rientro"
+        var request = URLRequest(url: ServerConfig.buildUrl(path: path))
+        request.httpMethod = "POST"
+        request.setValue("Bearer \(apiToken)", forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let payload: [String: Any] = [
+            "noleggio_id": noleggioId,
+            "sigla": sigla.uppercased(),
+            "righe_ids": righeIds,
+            "rientro_totale": rientroTotale
+        ]
+        
+        request.httpBody = try JSONSerialization.data(withJSONObject: payload)
+        
+        let (data, response) = try await insecureSession.data(for: request)
+        
+        guard let http = response as? HTTPURLResponse, http.statusCode == 200 else {
+            throw APIError.invalidResponse
+        }
+        
+        let decoded = try JSONDecoder().decode(RientroResultDTO.self, from: data)
+        
+        if !decoded.success {
+            throw APIError.serverMessage(decoded.message ?? "Errore rientro")
+        }
+        
+        return decoded
+    }
