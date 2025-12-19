@@ -33,8 +33,7 @@ struct HomeView: View {
                 }
             }
             .sheet(isPresented: $showScanner) {
-                BarcodeScannerView { code in
-                    showScanner = false
+                BarcodeScannerView(isPresented: $showScanner) { code in
                     handleScannedCode(code)
                 }
             }
@@ -400,7 +399,6 @@ struct SettingsView: View {
             Section("Account") {
                 if let user = appSession.user {
                     LabeledContent("Nome", value: user.nome)
-                    LabeledContent("Username", value: user.username)
                     LabeledContent("Ruolo", value: user.ruolo)
                     if let filiale = user.filiale {
                         LabeledContent("Filiale", value: filiale)
