@@ -240,7 +240,7 @@ struct HomeView: View {
             scadenze = "\(scadenzeCount)"
             
             // Fetch clienti to count total
-            let clienti = try await APIClient.fetchClienti(search: nil, limit: 1000, apiToken: token)
+            let clienti = try await APIClient.fetchClienti(query: nil, apiToken: token)
             clientiTotali = "\(clienti.count)"
             
             // For now, set attrezzature as placeholder (would need specific API)
