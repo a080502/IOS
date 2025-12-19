@@ -49,26 +49,36 @@ workflows:
           echo "📦 Nuovo build number: $BUILD_NUMBER"
           # /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $BUILD_NUMBER" Info.plist
       
-      - name: Build IPA per AltStore (non firmato)
+      - name: Build IPA con ad-hoc signing per AltStore
         script: |
-          echo "🚀 Build app..."
+          echo "🚀 Build app con ad-hoc signing..."
           xcodebuild -project "$XCODE_PROJECT" \
             -scheme "$XCODE_SCHEME" \
             -sdk iphoneos \
             -configuration Release \
             -derivedDataPath build \
-            CODE_SIGN_IDENTITY="" \
-            CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGNING_ALLOWED=NO
+            CODE_SIGN_IDENTITY="-" \
+            CODE_SIGNING_REQUIRED=YES \
+            CODE_SIGNING_ALLOWED=YES \
+            AD_HOC_CODE_SIGNING_ALLOWED=YES
+          
+          echo "📦 Firma ad-hoc del binario..."
+          APP_PATH="build/Build/Products/Release-iphoneos/MyNoleggioApp.app"
+          
+          # Firma ad-hoc con codesign (crea la struttura per ldid)
+          /usr/bin/codesign --force --sign - --entitlements MyNoleggioApp/MyNoleggioApp.entitlements "$APP_PATH"
+          
+          # Verifica la firma
+          codesign -dvv "$APP_PATH" || true
           
           echo "📦 Creazione IPA..."
           mkdir -p output/Payload
-          cp -r build/Build/Products/Release-iphoneos/MyNoleggioApp.app output/Payload/
+          cp -r "$APP_PATH" output/Payload/
           cd output
           zip -r MyNoleggioApp.ipa Payload
           rm -rf Payload
           
-          echo "✅ IPA creato (AltStore lo firmerà automaticamente)"
+          echo "✅ IPA con ad-hoc signing pronto per AltStore"
           ls -lh MyNoleggioApp.ipa
     
     # File generati da conservare
