@@ -106,6 +106,7 @@ struct NuovoNoleggioView: View {
                 AttrezzaturaPickerView { attrezzatura, quantita in
                     viewModel.aggiungiArticolo(attrezzatura, quantita: quantita)
                 }
+                .environmentObject(session)
             }
             .overlay {
                 if viewModel.isLoading {
