@@ -4,13 +4,15 @@ struct RientroRapidoView: View {
     @EnvironmentObject var session: AppSession
     @Environment(\.dismiss) private var dismiss
     
-    @StateObject private var viewModel: RientroRapidoViewModel
+    @StateObject private var viewModel = RientroRapidoViewModel()
     @State private var showScanner = false
     @State private var showSiglaPrompt = false
     @State private var siglaOperatore = ""
     
-    init(initialNoleggio: DettaglioNoleggio? = nil) {
-        _viewModel = StateObject(wrappedValue: RientroRapidoViewModel(initialNoleggio: initialNoleggio))
+    let preloadNoleggioId: Int?
+    
+    init(preloadNoleggioId: Int? = nil) {
+        self.preloadNoleggioId = preloadNoleggioId
     }
     
     var body: some View {
@@ -44,6 +46,11 @@ struct RientroRapidoView: View {
                         Image(systemName: "qrcode.viewfinder")
                             .font(.title3)
                     }
+                }
+            }
+            .task {
+                if let noleggioId = preloadNoleggioId, let token = session.apiToken {
+                    await viewModel.cercaNoleggioById(id: noleggioId, token: token)
                 }
             }
             .sheet(isPresented: $showScanner) {
@@ -396,38 +403,7 @@ class RientroRapidoViewModel: ObservableObject {
     @Published var errorMessage = ""
     @Published var showSuccess = false
     @Published var successMessage = ""
-        init(initialNoleggio: DettaglioNoleggio? = nil) {
-        if let initial = initialNoleggio {
-            // Converti DettaglioNoleggio in RientroRapidoNoleggio
-            self.noleggioTrovato = RientroRapidoNoleggio(
-                id: initial.id,
-                numeroNoleggio: initial.numeroNoleggio,
-                clienteNome: initial.clienteNome ?? "",
-                dataInizio: initial.dataInizio,
-                dataFinePrevista: initial.dataFinePrevista,
-                stato: initial.stato,
-                dettagli: initial.articoli?.map { articolo in
-                    RientroRapidoDettaglio(
-                        id: articolo.id,
-                        attrezzaturaNome: articolo.attrezzaturaNome,
-                        codice: nil,
-                        matricola: nil,
-                        quantita: articolo.quantita,
-                        costoGiornaliero: articolo.costoGiornaliero,
-                        prezzoMovimentazione: 0,
-                        statoRiga: "attivo" // Assume active for initial load
-                    )
-                } ?? [],
-                articoliAttivi: 0,
-                articoliRientrati: 0
-            )
-            
-            // Pre-select all active items
-            if let noleggio = self.noleggioTrovato {
-                righeSelezionate = Set(noleggio.dettagli.filter { $0.statoRiga == "attivo" }.map { $0.id })
-            }
-        }
-    }
+
         func cercaNoleggio(barcode: String, token: String) async {
         isLoading = true
         
@@ -436,6 +412,24 @@ class RientroRapidoViewModel: ObservableObject {
             noleggioTrovato = noleggio
             
             // Pre-seleziona tutti gli articoli attivi
+            righeSelezionate = Set(noleggio.dettagli.filter { $0.statoRiga == "attivo" }.map { $0.id })
+        } catch {
+            errorMessage = error.localizedDescription
+            showError = true
+        }
+        
+        isLoading = false
+    }
+    
+    func cercaNoleggioById(id: Int, token: String) async {
+        isLoading = true
+        
+        do {
+            // Use the same API endpoint with the ID as barcode
+            let noleggio = try await APIClient.cercaNoleggioPerBarcode(String(id), apiToken: token)
+            noleggioTrovato = noleggio
+            
+            // Pre-select all active items
             righeSelezionate = Set(noleggio.dettagli.filter { $0.statoRiga == "attivo" }.map { $0.id })
         } catch {
             errorMessage = error.localizedDescription
