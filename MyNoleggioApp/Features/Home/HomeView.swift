@@ -219,13 +219,20 @@ struct HomeView: View {
     // MARK: - Actions
     
     private func loadDashboardStats() async {
-        guard let token = appSession.apiToken else { return }
+        guard let token = appSession.apiToken else { 
+            print("❌ No API token available")
+            return 
+        }
         isLoadingStats = true
+        
+        print("📊 Loading dashboard stats...")
         
         do {
             // Fetch storico noleggi to count active ones
+            print("🔄 Fetching noleggi attivi...")
             let noleggi = try await APIClient.fetchStoricoNoleggi(filter: "attivo", limit: 100, apiToken: token)
             noleggioAttivi = "\(noleggi.count)"
+            print("✅ Noleggi attivi: \(noleggi.count)")
             
             // Count scadenze (noleggi attivi con data fine entro 7 giorni)
             let dateFormatter = DateFormatter()
@@ -238,19 +245,26 @@ struct HomeView: View {
                 return dataFine >= today && dataFine <= weekFromNow
             }.count
             scadenze = "\(scadenzeCount)"
+            print("✅ Scadenze: \(scadenzeCount)")
             
             // Fetch clienti to count total
+            print("🔄 Fetching clienti...")
             let clienti = try await APIClient.fetchClienti(query: nil, apiToken: token)
             clientiTotali = "\(clienti.count)"
+            print("✅ Clienti totali: \(clienti.count)")
             
             // For now, set attrezzature as placeholder (would need specific API)
             attrezzature = "N/D"
         } catch {
             // On error, keep "—" values
-            print("Error loading dashboard stats: \(error)")
+            print("❌ Error loading dashboard stats: \(error)")
+            if let apiError = error as? APIClient.APIError {
+                print("   API Error: \(apiError.localizedDescription)")
+            }
         }
         
         isLoadingStats = false
+        print("📊 Dashboard stats loading complete")
     }
     
     private func handleScannedCode(_ code: String) {

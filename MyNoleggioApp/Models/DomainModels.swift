@@ -73,6 +73,27 @@ struct StoricoNoleggio: Codable, Identifiable {
         case totale
         case numArticoli = "num_articoli"
     }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(Int.self, forKey: .id)
+        numeroNoleggio = try container.decode(String.self, forKey: .numeroNoleggio)
+        clienteNome = try container.decode(String.self, forKey: .clienteNome)
+        dataInizio = try container.decode(String.self, forKey: .dataInizio)
+        dataFine = try container.decode(String.self, forKey: .dataFine)
+        stato = try container.decode(String.self, forKey: .stato)
+        numArticoli = try container.decode(Int.self, forKey: .numArticoli)
+        
+        // Flexible totale decoding: accept both String and Double
+        if let totaleDouble = try? container.decode(Double.self, forKey: .totale) {
+            totale = totaleDouble
+        } else if let totaleString = try? container.decode(String.self, forKey: .totale),
+                  let totaleDouble = Double(totaleString) {
+            totale = totaleDouble
+        } else {
+            totale = 0.0
+        }
+    }
 }
 
 struct StoricoResponseDTO: Codable {

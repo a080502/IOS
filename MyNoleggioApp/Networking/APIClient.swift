@@ -202,7 +202,22 @@ struct APIClient {
             throw APIError.httpError(http.statusCode)
         }
 
-        let decoded = try JSONDecoder().decode(StoricoResponseDTO.self, from: data)
+        // Log response for debugging
+        if let jsonString = String(data: data, encoding: .utf8) {
+            print("📦 Storico Noleggi JSON: \(jsonString.prefix(500))")
+        }
+        
+        let decoded: StoricoResponseDTO
+        do {
+            decoded = try JSONDecoder().decode(StoricoResponseDTO.self, from: data)
+        } catch {
+            print("❌ JSON Parse Error: \(error)")
+            if let jsonString = String(data: data, encoding: .utf8) {
+                print("📄 Raw JSON: \(jsonString)")
+            }
+            throw APIError.decodingError
+        }
+        
         if decoded.success, let list = decoded.noleggi {
             return list
         } else {
