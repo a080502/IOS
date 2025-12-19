@@ -51,6 +51,51 @@ struct ClienteDetailResponseDTO: Codable {
     let error: String?
 }
 
+// MARK: - Attrezzature
+
+struct Attrezzatura: Codable, Identifiable {
+    let id: Int
+    let nome: String
+    let codice: String?
+    let prezzoGiorno: Double
+    let quantitaDisponibile: Int
+    let fuoriRevisione: Bool
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case nome
+        case codice
+        case prezzoGiorno = "prezzo_giorno"
+        case quantitaDisponibile = "quantita_disponibile"
+        case fuoriRevisione = "fuori_revisione"
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(Int.self, forKey: .id)
+        nome = try container.decode(String.self, forKey: .nome)
+        codice = try? container.decode(String.self, forKey: .codice)
+        quantitaDisponibile = try container.decode(Int.self, forKey: .quantitaDisponibile)
+        fuoriRevisione = (try? container.decode(Int.self, forKey: .fuoriRevisione)) == 1
+        
+        // Flexible prezzoGiorno decoding
+        if let prezzoDbl = try? container.decode(Double.self, forKey: .prezzoGiorno) {
+            prezzoGiorno = prezzoDbl
+        } else if let prezzoStr = try? container.decode(String.self, forKey: .prezzoGiorno),
+                  let prezzoDbl = Double(prezzoStr) {
+            prezzoGiorno = prezzoDbl
+        } else {
+            prezzoGiorno = 0.0
+        }
+    }
+}
+
+struct AttrezzatureResponseDTO: Codable {
+    let success: Bool
+    let attrezzature: [Attrezzatura]?
+    let error: String?
+}
+
 // MARK: - Storico Noleggi
 
 struct StoricoNoleggio: Codable, Identifiable {

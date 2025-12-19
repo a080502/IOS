@@ -149,6 +149,32 @@ struct APIClient {
         if decoded.success {
             return decoded.data ?? []
         } else {
+            throw APIError.serverMessage(decoded.error ?? "Errore sconosciuto")
+        }
+    }
+    
+    // MARK: - Attrezzature
+    
+    static func fetchAttrezzature(apiToken: String) async throws -> [Attrezzatura] {
+        let path = "/noleggio/api/attrezzature.php"
+        var request = URLRequest(url: ServerConfig.buildUrl(path: path))
+        request.httpMethod = "GET"
+        request.setValue("Bearer \(apiToken)", forHTTPHeaderField: "Authorization")
+        
+        let (data, response) = try await insecureSession.data(for: request)
+        
+        guard let http = response as? HTTPURLResponse else {
+            throw APIError.invalidResponse
+        }
+        
+        guard http.statusCode == 200 else {
+            throw APIError.httpError(http.statusCode)
+        }
+        
+        let decoded = try JSONDecoder().decode(AttrezzatureResponseDTO.self, from: data)
+        if decoded.success {
+            return decoded.attrezzature ?? []
+        } else {
             throw APIError.serverMessage(decoded.error ?? "Errore nel caricamento clienti")
         }
     }
