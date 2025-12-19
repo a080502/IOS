@@ -267,7 +267,7 @@ struct RientroRapidoView: View {
             await viewModel.processaRientro(
                 noleggioId: noleggio.id,
                 sigla: siglaOperatore,
-                token: session.authToken ?? ""
+                token: session.apiToken ?? ""
             )
             siglaOperatore = ""
         }

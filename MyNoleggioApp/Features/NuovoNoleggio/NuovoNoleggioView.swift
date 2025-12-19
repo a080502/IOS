@@ -88,7 +88,7 @@ struct NuovoNoleggioView: View {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button("Crea") {
                         Task {
-                            await viewModel.creaNuovoNoleggio(token: session.authToken ?? "")
+                            await viewModel.creaNuovoNoleggio(token: session.apiToken ?? "")
                             if viewModel.noleggioCreato {
                                 dismiss()
                             }
@@ -233,9 +233,9 @@ struct ClientePickerView: View {
     
     var filteredClienti: [Cliente] {
         if searchText.isEmpty {
-            return viewModel.clienti
+            return viewModel.appSession.clients
         }
-        return viewModel.clienti.filter { cliente in
+        return viewModel.appSession.clients.filter { cliente in
             cliente.displayName.localizedCaseInsensitiveContains(searchText) ||
             (cliente.email?.localizedCaseInsensitiveContains(searchText) ?? false)
         }
@@ -275,10 +275,10 @@ struct ClientePickerView: View {
                 }
             }
             .task {
-                await viewModel.load(token: session.apiToken ?? "")
+                // Clienti già caricati in appSession, non serve load
             }
             .overlay {
-                if viewModel.isLoading {
+                if viewModel.appSession.isLoading {
                     ProgressView()
                 }
             }
