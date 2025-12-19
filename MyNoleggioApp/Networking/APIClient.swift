@@ -215,7 +215,7 @@ struct APIClient {
             if let jsonString = String(data: data, encoding: .utf8) {
                 print("📄 Raw JSON: \(jsonString)")
             }
-            throw APIError.decodingError
+            throw APIError.invalidResponse
         }
         
         if decoded.success, let list = decoded.noleggi {
