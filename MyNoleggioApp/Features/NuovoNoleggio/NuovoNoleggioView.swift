@@ -79,13 +79,13 @@ struct NuovoNoleggioView: View {
             .navigationTitle("Nuovo Noleggio")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
+                ToolbarItemGroup(placement: .navigationBarLeading) {
                     Button("Annulla") {
                         dismiss()
                     }
                 }
                 
-                ToolbarItem(placement: .navigationBarTrailing) {
+                ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button("Crea") {
                         Task {
                             await viewModel.creaNuovoNoleggio(token: session.authToken ?? "")
@@ -99,7 +99,7 @@ struct NuovoNoleggioView: View {
                 }
             }
             .sheet(isPresented: $showClientePicker) {
-                ClientePickerView(selectedCliente: $viewModel.clienteSelezionato)
+                ClientePickerView(selectedCliente: $viewModel.clienteSelezionato, session: session)
                     .environmentObject(session)
             }
             .sheet(isPresented: $showAttrezzaturaPicker) {
@@ -223,8 +223,13 @@ struct ClientePickerView: View {
     @Environment(\.dismiss) private var dismiss
     @Binding var selectedCliente: Cliente?
     
-    @StateObject private var viewModel = ClientsViewModel()
+    @StateObject private var viewModel: ClientsViewModel
     @State private var searchText = ""
+    
+    init(selectedCliente: Binding<Cliente?>, session: AppSession) {
+        self._selectedCliente = selectedCliente
+        self._viewModel = StateObject(wrappedValue: ClientsViewModel(appSession: session))
+    }
     
     var filteredClienti: [Cliente] {
         if searchText.isEmpty {
@@ -270,7 +275,7 @@ struct ClientePickerView: View {
                 }
             }
             .task {
-                await viewModel.load(token: session.authToken ?? "")
+                await viewModel.load(token: session.apiToken ?? "")
             }
             .overlay {
                 if viewModel.isLoading {
@@ -410,7 +415,7 @@ class NuovoNoleggioViewModel: ObservableObject {
         isLoading = true
         
         do {
-            let result = try await APIClient.creaNuovoNoleggio(
+            _ = try await APIClient.creaNuovoNoleggio(
                 clienteId: clienteId,
                 dataInizio: formatDate(dataInizio),
                 dataFinePrevista: formatDate(dataFinePrevista),

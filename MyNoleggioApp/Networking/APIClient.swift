@@ -248,19 +248,7 @@ struct APIClient {
         
         if decoded.success, var noleggio = decoded.noleggio {
             // Merge dettagli articoli nel noleggio (come fa Android)
-            noleggio = NoleggioDettaglio(
-                id: noleggio.id,
-                numeroNoleggio: noleggio.numeroNoleggio,
-                clienteNome: noleggio.clienteNome,
-                dataInizio: noleggio.dataInizio,
-                dataFinePrevista: noleggio.dataFinePrevista,
-                dataFineEffettiva: noleggio.dataFineEffettiva,
-                stato: noleggio.stato,
-                totalePrevisto: noleggio.totalePrevisto,
-                totaleFinale: noleggio.totaleFinale,
-                note: noleggio.note,
-                articoli: decoded.dettagli ?? noleggio.articoli
-            )
+            // noleggio già decodato correttamente con init(from:)
             return noleggio
         } else {
             throw APIError.serverMessage(decoded.message ?? "Noleggio non trovato")

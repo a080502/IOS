@@ -45,7 +45,7 @@ struct RientroRapidoView: View {
             .sheet(isPresented: $showScanner) {
                 BarcodeScannerView(isPresented: $showScanner) { barcode in
                     Task {
-                        await viewModel.cercaNoleggio(barcode: barcode, token: session.authToken ?? "")
+                        await viewModel.cercaNoleggio(barcode: barcode, token: session.apiToken ?? "")
                     }
                 }
             }
