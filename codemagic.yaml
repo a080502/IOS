@@ -5,9 +5,10 @@ workflows:
     instance_type: mac_mini_m1
     
     environment:
-      # Configurazione firma del codice iOS
+      # Configurazione firma del codice iOS - AUTOMATICA
+      # Codemagic genera automaticamente i certificati
       ios_signing:
-        distribution_type: development  # Opzioni: development, ad_hoc, app_store, enterprise
+        distribution_type: development
         bundle_identifier: com.mynoleggioapp.app  # CAMBIA CON IL TUO BUNDLE ID
       
       # Variabili d'ambiente
@@ -63,7 +64,8 @@ workflows:
           xcode-project build-ipa \
             --project "$XCODE_PROJECT" \
             --scheme "$XCODE_SCHEME" \
-            --archive-flags="-destination generic/platform=iOS"
+            --archive-flags="-destination generic/platform=iOS" \
+            CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
     
     # File generati da conservare
     artifacts:
