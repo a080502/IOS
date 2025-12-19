@@ -4,10 +4,14 @@ struct RientroRapidoView: View {
     @EnvironmentObject var session: AppSession
     @Environment(\.dismiss) private var dismiss
     
-    @StateObject private var viewModel = RientroRapidoViewModel()
+    @StateObject private var viewModel: RientroRapidoViewModel
     @State private var showScanner = false
     @State private var showSiglaPrompt = false
     @State private var siglaOperatore = ""
+    
+    init(initialNoleggio: DettaglioNoleggio? = nil) {
+        _viewModel = StateObject(wrappedValue: RientroRapidoViewModel(initialNoleggio: initialNoleggio))
+    }
     
     var body: some View {
         NavigationView {
@@ -392,8 +396,39 @@ class RientroRapidoViewModel: ObservableObject {
     @Published var errorMessage = ""
     @Published var showSuccess = false
     @Published var successMessage = ""
-    
-    func cercaNoleggio(barcode: String, token: String) async {
+        init(initialNoleggio: DettaglioNoleggio? = nil) {
+        if let initial = initialNoleggio {
+            // Converti DettaglioNoleggio in RientroRapidoNoleggio
+            self.noleggioTrovato = RientroRapidoNoleggio(
+                id: initial.id,
+                numeroNoleggio: initial.numeroNoleggio,
+                clienteNome: initial.clienteNome ?? "",
+                dataInizio: initial.dataInizio,
+                dataFinePrevista: initial.dataFinePrevista,
+                stato: initial.stato,
+                dettagli: initial.articoli?.map { articolo in
+                    RientroRapidoDettaglio(
+                        id: articolo.id,
+                        attrezzaturaNome: articolo.attrezzaturaNome,
+                        codice: nil,
+                        matricola: nil,
+                        quantita: articolo.quantita,
+                        costoGiornaliero: articolo.costoGiornaliero,
+                        prezzoMovimentazione: 0,
+                        statoRiga: "attivo" // Assume active for initial load
+                    )
+                } ?? [],
+                articoliAttivi: 0,
+                articoliRientrati: 0
+            )
+            
+            // Pre-select all active items
+            if let noleggio = self.noleggioTrovato {
+                righeSelezionate = Set(noleggio.dettagli.filter { $0.statoRiga == "attivo" }.map { $0.id })
+            }
+        }
+    }
+        func cercaNoleggio(barcode: String, token: String) async {
         isLoading = true
         
         do {
