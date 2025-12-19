@@ -49,14 +49,18 @@ workflows:
       - name: Build senza firma (solo test compilazione)
         script: |
           echo "🚀 Build per simulatore..."
+          set -x
           xcodebuild -project "$XCODE_PROJECT" \
             -scheme "$XCODE_SCHEME" \
             -sdk iphonesimulator \
             -configuration Release \
+            -derivedDataPath build \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
-            clean build
+            build | tee build.log
+          
+          echo "✅ Build completata"
     
     # File generati da conservare
     artifacts:
