@@ -15,7 +15,7 @@ workflows:
         BUNDLE_ID: "com.mynoleggioapp.app"  # CAMBIA CON IL TUO BUNDLE ID
       
       # Versione Xcode da usare
-      xcode: 15.2
+      xcode: latest
       cocoapods: default
     
     # Script da eseguire in sequenza
