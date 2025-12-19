@@ -232,10 +232,14 @@ struct ClientePickerView: View {
     }
     
     var filteredClienti: [Cliente] {
-        if searchText.isEmpty {
-            return viewModel.appSession.clients
+        guard case .success(let clienti) = viewModel.state else {
+            return []
         }
-        return viewModel.appSession.clients.filter { cliente in
+        
+        if searchText.isEmpty {
+            return clienti
+        }
+        return clienti.filter { cliente in
             cliente.displayName.localizedCaseInsensitiveContains(searchText) ||
             (cliente.email?.localizedCaseInsensitiveContains(searchText) ?? false)
         }
@@ -275,10 +279,10 @@ struct ClientePickerView: View {
                 }
             }
             .task {
-                // Clienti già caricati in appSession, non serve load
+                await viewModel.loadClients()
             }
             .overlay {
-                if viewModel.appSession.isLoading {
+                if case .loading = viewModel.state {
                     ProgressView()
                 }
             }
