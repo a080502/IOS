@@ -10,9 +10,11 @@ struct RientroRapidoView: View {
     @State private var siglaOperatore = ""
     
     let preloadNoleggioId: Int?
+    let preloadNumeroNoleggio: String?
     
-    init(preloadNoleggioId: Int? = nil) {
+    init(preloadNoleggioId: Int? = nil, preloadNumeroNoleggio: String? = nil) {
         self.preloadNoleggioId = preloadNoleggioId
+        self.preloadNumeroNoleggio = preloadNumeroNoleggio
     }
     
     var body: some View {
@@ -49,8 +51,12 @@ struct RientroRapidoView: View {
                 }
             }
             .task {
-                if let noleggioId = preloadNoleggioId, let token = session.apiToken {
-                    await viewModel.cercaNoleggioById(id: noleggioId, token: token)
+                if let token = session.apiToken {
+                    if let numeroNoleggio = preloadNumeroNoleggio {
+                        await viewModel.cercaNoleggio(barcode: numeroNoleggio, token: token)
+                    } else if let noleggioId = preloadNoleggioId {
+                        await viewModel.cercaNoleggioById(id: noleggioId, token: token)
+                    }
                 }
             }
             .sheet(isPresented: $showScanner) {

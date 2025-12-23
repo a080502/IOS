@@ -151,7 +151,7 @@ struct RentalDetailView: View {
         .sheet(isPresented: $showRientroRapido) {
             if case .success(let noleggio) = viewModel.state {
                 NavigationStack {
-                    RientroRapidoView(preloadNoleggioId: noleggio.id)
+                    RientroRapidoView(preloadNumeroNoleggio: noleggio.numeroNoleggio)
                         .environmentObject(appSession)
                 }
             }
