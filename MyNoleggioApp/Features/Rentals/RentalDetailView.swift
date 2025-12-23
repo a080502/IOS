@@ -76,22 +76,16 @@ struct RentalDetailView: View {
                                 Text("Totale previsto")
                                 Spacer()
                                 Text(String(format: "€ %.2f", totalePrevisto))
+                                    .fontWeight(.semibold)
                             }
                         }
-                        if let totaleFinale = noleggio.totaleFinale {
+                        if let totaleFinale = noleggio.totaleFinale, totaleFinale > 0 {
                             HStack {
                                 Text("Totale finale")
                                 Spacer()
                                 Text(String(format: "€ %.2f", totaleFinale))
-                                    .fontWeight(.semibold)
+                                    .fontWeight(.bold)
                                     .foregroundColor(.blue)
-                            }
-                        } else if let totalePrevisto = noleggio.totalePrevisto {
-                            HStack {
-                                Text("Totale finale")
-                                Spacer()
-                                Text(String(format: "€ %.2f", totalePrevisto))
-                                    .fontWeight(.semibold)
                             }
                         }
                     }
@@ -105,10 +99,18 @@ struct RentalDetailView: View {
                                     HStack {
                                         Text("Quantità: \(articolo.quantita)")
                                         Spacer()
-                                        Text(String(format: "€ %.2f/giorno", articolo.costoGiornaliero))
                                     }
                                     .font(.subheadline)
                                     .foregroundColor(.secondary)
+                                    
+                                    HStack(spacing: 12) {
+                                        Label(String(format: "€ %.2f/giorno", articolo.costoGiornaliero), systemImage: "calendar")
+                                        if let prezzo = articolo.prezzoMovimentazione, prezzo > 0 {
+                                            Label(String(format: "€ %.2f una tantum", prezzo), systemImage: "tag")
+                                        }
+                                    }
+                                    .font(.caption)
+                                    .foregroundColor(.blue)
                                 }
                                 .padding(.vertical, 2)
                             }

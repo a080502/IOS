@@ -155,11 +155,13 @@ struct ArticoloDettaglio: Codable, Identifiable {
     let attrezzaturaNome: String
     let quantita: Int
     let costoGiornaliero: Double
+    let prezzoMovimentazione: Double?
 
     enum CodingKeys: String, CodingKey {
         case attrezzaturaNome = "attrezzatura_nome"
         case quantita
         case costoGiornaliero = "costo_giornaliero"
+        case prezzoMovimentazione = "prezzo_movimentazione"
     }
     
     init(from decoder: Decoder) throws {
@@ -176,6 +178,16 @@ struct ArticoloDettaglio: Codable, Identifiable {
             costoGiornaliero = costoDouble
         } else {
             costoGiornaliero = 0.0
+        }
+        
+        // Flexible prezzoMovimentazione parsing
+        if let prezzoDouble = try? container.decode(Double.self, forKey: .prezzoMovimentazione) {
+            prezzoMovimentazione = prezzoDouble
+        } else if let prezzoString = try? container.decode(String.self, forKey: .prezzoMovimentazione),
+                  let prezzoDouble = Double(prezzoString) {
+            prezzoMovimentazione = prezzoDouble
+        } else {
+            prezzoMovimentazione = nil
         }
     }
 }
