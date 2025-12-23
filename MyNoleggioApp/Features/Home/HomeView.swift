@@ -2,7 +2,6 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject private var appSession: AppSession
-    @State private var showScanner = false
     @State private var showSettings = false
     @State private var showRientroRapido = false
     @State private var showNuovoNoleggio = false
@@ -37,11 +36,6 @@ struct HomeView: View {
                     Button(action: { showSettings = true }) {
                         Image(systemName: "gearshape.fill")
                     }
-                }
-            }
-            .sheet(isPresented: $showScanner) {
-                BarcodeScannerView(isPresented: $showScanner) { code in
-                    handleScannedCode(code)
                 }
             }
             .sheet(isPresented: $showRientroRapido) {
@@ -202,14 +196,6 @@ struct HomeView: View {
             
             HStack(spacing: 12) {
                 QuickActionButton(
-                    title: "Scanner",
-                    icon: "qrcode.viewfinder",
-                    color: .blue
-                ) {
-                    showScanner = true
-                }
-                
-                QuickActionButton(
                     title: "Rientro Rapido",
                     icon: "arrow.down.circle.fill",
                     color: .green
@@ -277,11 +263,6 @@ struct HomeView: View {
         
         isLoadingStats = false
         print("📊 Dashboard stats loading complete")
-    }
-    
-    private func handleScannedCode(_ code: String) {
-        // TODO: Gestire codice scansionato
-        print("📱 Scanned code: \(code)")
     }
 }
 
