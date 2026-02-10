@@ -30,10 +30,10 @@ if [ -f "dist/price_calculator" ] || [ -f "dist/price_calculator.exe" ]; then
     echo "   ✅ BUILD SUCCESSFUL!"
     echo "============================================================"
     echo ""
-    echo "Executable created at: dist/price_calculator.exe"
+    echo "Executable created in dist/ folder"
     echo ""
     echo "To distribute:"
-    echo "  1. Copy dist/price_calculator.exe to any Windows PC"
+    echo "  1. Copy the executable from dist/ to any PC"
     echo "  2. Double-click to run (no Python needed!)"
     echo ""
 else

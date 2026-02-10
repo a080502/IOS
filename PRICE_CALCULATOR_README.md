@@ -223,12 +223,12 @@ Do you want to perform another calculation? (y/n)
 ### Per l'eseguibile standalone (price_calculator.exe)
 - **Sistema operativo**: Windows 7/8/10/11
 - **Python**: ❌ NON NECESSARIO / NOT REQUIRED
-- **Spazio su disco**: ~10 MB
+- **Spazio su disco**: ~8 MB
 
 ### For standalone executable (price_calculator.exe)
 - **Operating system**: Windows 7/8/10/11
 - **Python**: ❌ NOT REQUIRED
-- **Disk space**: ~10 MB
+- **Disk space**: ~8 MB
 
 ### Per eseguire il file Python (.py)
 - **Sistema operativo**: Windows/Linux/macOS
