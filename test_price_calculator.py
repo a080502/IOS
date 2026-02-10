@@ -6,8 +6,6 @@ Test for Markup and Margin Calculator
 """
 
 import sys
-sys.path.insert(0, '/home/runner/work/IOS/IOS')
-
 from price_calculator import calculate_markup_and_margin, format_currency, format_percentage
 
 def test_basic_calculation():

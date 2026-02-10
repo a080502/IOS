@@ -10,16 +10,20 @@ partendo dal prezzo di partenza e dal prezzo di arrivo.
 This program calculates markup and margin based on starting and arrival prices.
 """
 
-def calculate_markup_and_margin(starting_price, arrival_price):
+def calculate_markup_and_margin(starting_price: float, arrival_price: float) -> dict:
     """
     Calcola ricarico e margine
     
     Args:
-        starting_price: Prezzo di partenza (costo)
-        arrival_price: Prezzo di arrivo (vendita)
+        starting_price (float): Prezzo di partenza (costo)
+        arrival_price (float): Prezzo di arrivo (vendita)
     
     Returns:
-        dict: Dizionario con ricarico e margine in percentuale e valore assoluto
+        dict: Dizionario con le seguenti chiavi:
+            - markup_absolute (float): Valore assoluto del ricarico
+            - markup_percentage (float): Percentuale di ricarico
+            - margin_absolute (float): Valore assoluto del margine
+            - margin_percentage (float): Percentuale di margine
     """
     # Valore assoluto del ricarico e margine
     absolute_markup = arrival_price - starting_price
