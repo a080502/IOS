@@ -1,6 +1,9 @@
 # Calcolatore di Ricarico e Margine per Windows
 # Markup and Margin Calculator for Windows
 
+> **🚀 UTENTI WINDOWS**: Vuoi usarlo subito senza complicazioni? Leggi [WINDOWS_QUICK_SOLUTION.md](WINDOWS_QUICK_SOLUTION.md)!  
+> **🚀 WINDOWS USERS**: Want to use it immediately without complications? Read [WINDOWS_QUICK_SOLUTION.md](WINDOWS_QUICK_SOLUTION.md)!
+
 Questo programma calcola il **ricarico (markup)** e il **margine (margin)** partendo dal prezzo di partenza (costo) e dal prezzo di arrivo (vendita).
 
 This program calculates **markup** and **margin** based on starting price (cost) and arrival price (selling).

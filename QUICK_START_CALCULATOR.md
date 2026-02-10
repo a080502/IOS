@@ -1,5 +1,12 @@
 # 🚀 AVVIO RAPIDO / QUICK START
 
+> **⚡ METODO PIÙ SEMPLICE PER WINDOWS / EASIEST METHOD FOR WINDOWS**:  
+> Basta fare doppio click su `run_calculator_simple.bat` oppure eseguire `python price_calculator.py`  
+> Just double-click `run_calculator_simple.bat` or run `python price_calculator.py`  
+> **Nessuna compilazione necessaria! / No build needed!**
+
+---
+
 ## ✅ FUNZIONA SENZA PYTHON! / WORKS WITHOUT PYTHON!
 
 ### Per Utenti Windows / For Windows Users
