@@ -85,7 +85,7 @@ rm -rf build dist price_calculator.spec
 # Build the executable
 echo ""
 echo "Building executable with PyInstaller..."
-pyinstaller \
+$PYTHON_CMD -m PyInstaller \
     --onefile \
     --name "price_calculator" \
     --console \

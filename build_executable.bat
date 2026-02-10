@@ -98,7 +98,7 @@ if exist price_calculator.spec del /f price_calculator.spec
 REM Build the executable
 echo.
 echo Building executable with PyInstaller...
-pyinstaller --onefile --name "price_calculator" --console --clean --noconfirm price_calculator.py
+python -m PyInstaller --onefile --name "price_calculator" --console --clean --noconfirm price_calculator.py
 
 REM Check if build was successful
 if exist "dist\price_calculator.exe" (
