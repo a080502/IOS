@@ -276,32 +276,51 @@ If you want to rebuild the standalone executable from scratch, follow these step
 
 ### Su Windows / On Windows
 
-1. **Installa Python e PyInstaller**:
-   ```cmd
-   pip install pyinstaller
-   ```
+1. **Assicurati che Python sia installato**:
+   - Verifica con: `python --version`
+   - Se non installato, scarica da: https://www.python.org/downloads/
 
 2. **Esegui lo script di build**:
    ```cmd
    build_executable.bat
    ```
+   
+   Lo script controllerà automaticamente se PyInstaller è installato.
+   Se non lo è, ti chiederà se vuoi installarlo automaticamente!
+   
+   The script will automatically check if PyInstaller is installed.
+   If not, it will ask if you want to install it automatically!
 
 3. **L'eseguibile sarà creato in** `dist/price_calculator.exe`
 
 ### Su Linux/Mac
 
-1. **Installa PyInstaller**:
-   ```bash
-   pip install pyinstaller
-   ```
+1. **Assicurati che Python sia installato**:
+   - Verifica con: `python3 --version`
 
 2. **Esegui lo script di build**:
    ```bash
    chmod +x build_executable.sh
    ./build_executable.sh
    ```
+   
+   Lo script controllerà automaticamente se PyInstaller è installato.
+   Se non lo è, ti chiederà se vuoi installarlo automaticamente!
+   
+   The script will automatically check if PyInstaller is installed.
+   If not, it will ask if you want to install it automatically!
 
 3. **L'eseguibile sarà creato in** `dist/price_calculator`
+
+### Installazione Manuale PyInstaller / Manual PyInstaller Installation
+
+Se preferisci installare PyInstaller manualmente prima di eseguire lo script:
+
+If you prefer to manually install PyInstaller before running the script:
+
+```bash
+pip install pyinstaller
+```
 
 **Nota**: L'eseguibile creato su Windows funzionerà solo su Windows. L'eseguibile creato su Linux funzionerà solo su Linux.
 

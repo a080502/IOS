@@ -16,16 +16,18 @@
 
 ### Su Windows / On Windows:
 ```cmd
-pip install pyinstaller
 build_executable.bat
 ```
+Lo script installerà automaticamente PyInstaller se necessario!
+The script will automatically install PyInstaller if needed!
 
 ### Su Linux/Mac:
 ```bash
-pip install pyinstaller
 chmod +x build_executable.sh
 ./build_executable.sh
 ```
+Lo script installerà automaticamente PyInstaller se necessario!
+The script will automatically install PyInstaller if needed!
 
 L'eseguibile sarà in `dist/price_calculator.exe` (Windows) o `dist/price_calculator` (Linux/Mac)
 
