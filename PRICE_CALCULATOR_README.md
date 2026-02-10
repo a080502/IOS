@@ -41,7 +41,22 @@ And returns:
 
 ## 💻 Come usarlo su Windows / How to use on Windows
 
-### Metodo 1: Con Python installato / With Python installed
+### ⭐ Metodo 1: SENZA Python (Raccomandato) / WITHOUT Python (Recommended)
+
+**✅ NON SERVE INSTALLARE PYTHON! / NO NEED TO INSTALL PYTHON!**
+
+1. **Scarica l'eseguibile** / **Download the executable**:
+   - Scarica il file `price_calculator.exe` dalla cartella `dist/`
+   - Download the file `price_calculator.exe` from the `dist/` folder
+
+2. **Esegui il programma** / **Run the program**:
+   - Doppio click su `price_calculator.exe`
+   - Double-click on `price_calculator.exe`
+   - **Nessuna installazione richiesta!** / **No installation required!**
+
+---
+
+### Metodo 2: Con Python installato / Method 2: With Python installed
 
 1. **Installa Python** (se non è già installato):
    - Scarica da: https://www.python.org/downloads/
@@ -61,7 +76,7 @@ And returns:
    python price_calculator.py
    ```
 
-### Method 1: With Python installed
+### Method 2: With Python installed
 
 1. **Install Python** (if not already installed):
    - Download from: https://www.python.org/downloads/
@@ -80,17 +95,6 @@ And returns:
    ```cmd
    python price_calculator.py
    ```
-
----
-
-### Metodo 2: Doppio click (più semplice) / Double-click method (easier)
-
-1. **Rinomina il file** da `price_calculator.py` a `price_calculator.pyw` (opzionale, per nascondere la finestra console extra)
-
-2. **Doppio click** sul file `price_calculator.py`
-
-   Se non funziona:
-   - Click destro sul file → "Apri con" → Seleziona Python
 
 ---
 
@@ -153,6 +157,7 @@ Do you want to perform another calculation? (y/n)
 
 ## 🎯 Caratteristiche / Features
 
+✅ **Funziona senza Python installato** (eseguibile .exe standalone)
 ✅ Interfaccia bilingue (Italiano/Inglese)
 ✅ Calcolo automatico di ricarico e margine
 ✅ Supporto per numeri decimali (usa . o ,)
@@ -161,6 +166,7 @@ Do you want to perform another calculation? (y/n)
 ✅ Formattazione chiara dei risultati
 ✅ Spiegazione delle formule
 
+✅ **Works without Python installed** (standalone .exe executable)
 ✅ Bilingual interface (Italian/English)
 ✅ Automatic calculation of markup and margin
 ✅ Support for decimal numbers (use . or ,)
@@ -172,6 +178,13 @@ Do you want to perform another calculation? (y/n)
 ---
 
 ## 🆘 Risoluzione problemi / Troubleshooting
+
+### ⭐ Soluzione più semplice / Easiest Solution
+**Usa l'eseguibile standalone `price_calculator.exe` che non richiede Python!**
+
+**Use the standalone executable `price_calculator.exe` which doesn't require Python!**
+
+---
 
 ### ❌ "Python non è riconosciuto come comando"
 **Soluzione**: Python non è installato o non è nel PATH
@@ -207,12 +220,24 @@ Do you want to perform another calculation? (y/n)
 
 ## 📊 Requisiti di sistema / System requirements
 
+### Per l'eseguibile standalone (price_calculator.exe)
 - **Sistema operativo**: Windows 7/8/10/11
-- **Python**: 3.6 o superiore (opzionale, necessario solo per esecuzione)
+- **Python**: ❌ NON NECESSARIO / NOT REQUIRED
+- **Spazio su disco**: ~10 MB
+
+### For standalone executable (price_calculator.exe)
+- **Operating system**: Windows 7/8/10/11
+- **Python**: ❌ NOT REQUIRED
+- **Disk space**: ~10 MB
+
+### Per eseguire il file Python (.py)
+- **Sistema operativo**: Windows/Linux/macOS
+- **Python**: 3.6 o superiore
 - **Spazio su disco**: < 1 MB
 
-- **Operating system**: Windows 7/8/10/11
-- **Python**: 3.6 or higher (optional, only needed for execution)
+### To run the Python file (.py)
+- **Operating system**: Windows/Linux/macOS
+- **Python**: 3.6 or higher
 - **Disk space**: < 1 MB
 
 ---
@@ -240,6 +265,47 @@ It is calculated relative to the **selling price**.
 **Esempio**: Se compri a € 100 e vendi a € 150, il margine è del **33.33%** (il guadagno è il 33.33% del prezzo di vendita).
 
 **Example**: If you buy at € 100 and sell at € 150, the margin is **33.33%** (the profit is 33.33% of the selling price).
+
+---
+
+## 🔧 Per Sviluppatori: Creare l'Eseguibile / For Developers: Building the Executable
+
+Se vuoi ricreare l'eseguibile standalone da zero, segui questi passi:
+
+If you want to rebuild the standalone executable from scratch, follow these steps:
+
+### Su Windows / On Windows
+
+1. **Installa Python e PyInstaller**:
+   ```cmd
+   pip install pyinstaller
+   ```
+
+2. **Esegui lo script di build**:
+   ```cmd
+   build_executable.bat
+   ```
+
+3. **L'eseguibile sarà creato in** `dist/price_calculator.exe`
+
+### Su Linux/Mac
+
+1. **Installa PyInstaller**:
+   ```bash
+   pip install pyinstaller
+   ```
+
+2. **Esegui lo script di build**:
+   ```bash
+   chmod +x build_executable.sh
+   ./build_executable.sh
+   ```
+
+3. **L'eseguibile sarà creato in** `dist/price_calculator`
+
+**Nota**: L'eseguibile creato su Windows funzionerà solo su Windows. L'eseguibile creato su Linux funzionerà solo su Linux.
+
+**Note**: The executable created on Windows will only work on Windows. The executable created on Linux will only work on Linux.
 
 ---
 
